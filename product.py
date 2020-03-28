@@ -17,6 +17,15 @@ class Product:
     name: str
     price: int
 
+    def __eq__(self, other):
+        """Overrides the default implementation"""
+        if isinstance(other, Product):
+            return (self.name == other.name and self.price == other.price)
+        return NotImplemented
+
+    def __hash__(self):
+        """Overrides the default implementation"""
+        return hash(tuple(sorted(self.__dict__.items())))
 
 @dataclass(init=True, repr=True, order=False, frozen=True)
 class Tea(Product):

@@ -1,0 +1,44 @@
+            #   Unguru Dragos-Gabriel, 336CC
+                    ASC - 1st homework
+
+    This project represents my personal approach
+at the producers-consumers problem using Python's
+Threading interface.
+
+    The main data structures used are
+
+        -> A dictionary that links every producer
+            with his selling booth. This is pictured
+            as a dictionary with:
+                - key   = producer's ID (string)
+                - value = list of products published
+
+        -> A dictionary that links every shopping cart
+            with their products bought from the selling booths.
+            This is represented as a dictionary with:
+                - key   = a unique shopping cart ID (string)
+                - value = a list of tuples of
+                        (product, producer_from_whom_it_was_bought)
+            So we can keep track of the booth that needs to be
+            refunded in the case of a refund (a remove_from_cart).
+
+    Therefore, using this implementation, and keeping in mind that
+every shopping cart has it's unique entry (key) in the dictionary (so
+we won't have data racing problems here) the only atomic part is the
+producer's booth. This is the area where a producer can insert new products
+and a consumer can take and/or remove a product.
+
+    So we won't overkill the program and to make sure we won't make any
+unecessary locks, we create a different lock for every producer's booth.
+(For every list of products linked to a producer in the dictionary)
+Using this approach will guarantee that every operation on the single
+shared memory is executed atomically and as less restrictive as possible.
+
+        -> Putting this ideea into practice, we'll have to
+    build a third dictionary that maps every producer's booth
+    to a unique lock:
+            - key   = the producer's ID (string)
+            - value = it's unique lock
+
+    For further implementation details, the code is thoroughly
+commented.
